@@ -1,6 +1,8 @@
 import logging
 from typing import Union, cast
 
+import requests
+
 from chromadb.api.types import Documents, EmbeddingFunction, Embeddings
 
 logger = logging.getLogger(__name__)
@@ -8,7 +10,9 @@ logger = logging.getLogger(__name__)
 
 class OllamaEmbeddingFunction(EmbeddingFunction[Documents]):
     """
-    This class is used to generate embeddings for a list of texts using the Ollama Embedding API (https://github.com/ollama/ollama/blob/main/docs/api.md#generate-embeddings).
+    This class is used to generate embeddings for a list of texts using the Ollama
+    Embedding API:
+    https://github.com/ollama/ollama/blob/main/docs/api.md#generate-embeddings.
     """
 
     def __init__(self, url: str, model_name: str) -> None:
@@ -17,14 +21,9 @@ class OllamaEmbeddingFunction(EmbeddingFunction[Documents]):
 
         Args:
             url (str): The URL of the Ollama Server.
-            model_name (str): The name of the model to use for text embeddings. E.g. "nomic-embed-text" (see https://ollama.com/library for available models).
+            model_name (str): The name of the model to use for text embeddings. E.g.
+            "nomic-embed-text" (see https://ollama.com/library for available models).
         """
-        try:
-            import requests
-        except ImportError:
-            raise ValueError(
-                "The requests python package is not installed. Please install it with `pip install requests`"
-            )
         self._api_url = f"{url}"
         self._model_name = model_name
         self._session = requests.Session()
@@ -40,7 +39,10 @@ class OllamaEmbeddingFunction(EmbeddingFunction[Documents]):
             Embeddings: The embeddings for the texts.
 
         Example:
-            >>> ollama_ef = OllamaEmbeddingFunction(url="http://localhost:11434/api/embeddings", model_name="nomic-embed-text")
+            >>> ollama_ef = OllamaEmbeddingFunction(
+            ...     url="http://localhost:11434/api/embeddings",
+            ...     model_name="nomic-embed-text"
+            ... )
             >>> texts = ["Hello, world!", "How are you?"]
             >>> embeddings = ollama_ef(texts)
         """
