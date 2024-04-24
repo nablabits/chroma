@@ -17,14 +17,17 @@ class AmazonBedrockEmbeddingFunction(EmbeddingFunction[Documents]):
         """Initialize AmazonBedrockEmbeddingFunction.
 
         Args:
-            session (boto3.Session): The boto3 session to use. You need to have boto3
-            installed, `pip install boto3`.
-            model_name (str, optional): Identifier of the model, defaults to "amazon.titan-embed-text-v1"
+            session (boto3.Session): The boto3 session to use. You need to have
+            boto3 installed, `pip install boto3`.
+            model_name (str, optional): Identifier of the model, defaults to
+            "amazon.titan-embed-text-v1"
             **kwargs: Additional arguments to pass to the boto3 client.
 
         Example:
             >>> import boto3
-            >>> session = boto3.Session(profile_name="profile", region_name="us-east-1")
+            >>> session = boto3.Session(
+            ...     profile_name="profile", region_name="us-east-1"
+            ... )
             >>> bedrock = AmazonBedrockEmbeddingFunction(session=session)
             >>> texts = ["Hello, world!", "How are you?"]
             >>> embeddings = bedrock(texts)
